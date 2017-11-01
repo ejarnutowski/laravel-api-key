@@ -1,0 +1,19 @@
+{
+    "name": "ejarnutowski/laravel-api-key",
+    "description": "Authorize requests to your Laravel app with API keys",
+    "keywords": ["api", "api key", "authentication", "authorization", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elliott Jarnutowski",
+            "email": "e@jarno.co"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Ejarnutowski\\LaravelApiKey\\": "src"
+        }
+    }
+}
