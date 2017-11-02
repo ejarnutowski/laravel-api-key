@@ -83,6 +83,20 @@ class ApiKey extends Model
     }
 
     /**
+     * Get ApiKey record by key value
+     *
+     * @param string $key
+     * @return bool
+     */
+    public static function getByKey($key)
+    {
+        return self::where([
+            'key'    => $key,
+            'active' => 1
+        ])->first();
+    }
+
+    /**
      * Check if key is valid
      *
      * @param string $key
@@ -90,10 +104,7 @@ class ApiKey extends Model
      */
     public static function isValidKey($key)
     {
-        return self::where([
-            'key'    => $key,
-            'active' => 1
-        ])->first() instanceof self;
+        return self::getByKey($key) instanceof self;
     }
 
     /**
@@ -110,6 +121,8 @@ class ApiKey extends Model
     /**
      * Check if a key already exists
      *
+     * Includes soft deleted records
+     *
      * @param string $key
      * @return bool
      */
@@ -121,12 +134,14 @@ class ApiKey extends Model
     /**
      * Check if a name already exists
      *
+     * Does not include soft deleted records
+     *
      * @param string $name
      * @return bool
      */
     public static function nameExists($name)
     {
-        return self::where('name', $name)->withTrashed()->first() instanceof self;
+        return self::where('name', $name)->first() instanceof self;
     }
 
     /**

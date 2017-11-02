@@ -20,10 +20,11 @@ class AuthorizeApiKey
      */
     public function handle(Request $request, Closure $next)
     {
-        $key = $request->header(self::AUTH_HEADER);
+        $header = $request->header(self::AUTH_HEADER);
+        $apiKey = ApiKey::getByKey($header);
 
-        if (ApiKey::isValidKey($key)) {
-            $this->logAccessEvent($request, $key);
+        if ($apiKey instanceof ApiKey) {
+            $this->logAccessEvent($request, $apiKey);
             return $next($request);
         }
 
@@ -38,12 +39,12 @@ class AuthorizeApiKey
      * Log an API key access event
      *
      * @param Request $request
-     * @param string  $key
+     * @param ApiKey  $apiKey
      */
-    protected function logAccessEvent(Request $request, $key)
+    protected function logAccessEvent(Request $request, ApiKey $apiKey)
     {
         $event = new ApiKeyAccessEvent;
-        $event->api_key_id = $key->id;
+        $event->api_key_id = $apiKey->id;
         $event->ip_address = $request->ip();
         $event->url        = $request->fullUrl();
         $event->save();

@@ -30,12 +30,30 @@ class ListApiKeys extends Command
             ? ApiKey::withTrashed()->orderBy('name')->get()
             : ApiKey::orderBy('name')->get();
 
-        $keys->each(function($key) {
+        if ($keys->count() === 0) {
+            $this->info('There are no API keys');
+            return;
+        }
 
-            $status = $key->active    ? 'active'  : 'inactive';
+        $headers = ['Name', 'ID', 'Status', 'Status Date', 'Key'];
+
+        $rows = $keys->map(function($key) {
+
+            $status = $key->active    ? 'active'  : 'deactivated';
             $status = $key->trashed() ? 'deleted' : $status;
 
-            $this->info($key->name . ' : ' . $key->key . ' : ' . $status);
+            $statusDate = $key->deleted_at ?: $key->updated_at;
+
+            return [
+                $key->name,
+                $key->id,
+                $status,
+                $statusDate,
+                $key->key
+            ];
+
         });
+
+        $this->table($headers, $rows);
     }
 }
