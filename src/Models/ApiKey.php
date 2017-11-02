@@ -9,8 +9,14 @@ class ApiKey extends Model
 {
     use SoftDeletes;
 
+    const EVENT_NAME_CREATED     = 'created';
+    const EVENT_NAME_ACTIVATED   = 'activated';
+    const EVENT_NAME_DEACTIVATED = 'deactivated';
+    const EVENT_NAME_DELETED     = 'deleted';
+
     protected static $nameRegex = '/^[a-z-]{1,255}$/';
-    protected        $table     = 'api_keys';
+
+    protected $table = 'api_keys';
 
     /**
      * Get the related ApiKeyAccessEvents records
@@ -19,7 +25,47 @@ class ApiKey extends Model
      */
     public function accessEvents()
     {
-        return $this->hasMany('Ejarnutowski\LaravelApiKey\Models\ApiKeyAccessEvents', 'api_key_id');
+        return $this->hasMany(ApiKeyAccessEvent::class, 'api_key_id');
+    }
+
+    /**
+     * Get the related ApiKeyAdminEvents records
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adminEvents()
+    {
+        return $this->hasMany(ApiKeyAdminEvent::class, 'api_key_id');
+    }
+
+    /**
+     * Bootstrapping event handlers
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function(ApiKey $apiKey) {
+            self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_CREATED);
+        });
+
+        static::updated(function($apiKey) {
+
+            $changed = $apiKey->getDirty();
+
+            if (isset($changed) && $changed['active'] === 1) {
+                self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_ACTIVATED);
+            }
+
+            if (isset($changed) && $changed['active'] === 0) {
+                self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DEACTIVATED);
+            }
+
+        });
+
+        static::deleted(function($apiKey) {
+            self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DELETED);
+        });
     }
 
     /**
@@ -62,6 +108,17 @@ class ApiKey extends Model
     }
 
     /**
+     * Check if a key already exists
+     *
+     * @param string $key
+     * @return bool
+     */
+    public static function keyExists($key)
+    {
+        return self::where('key', $key)->withTrashed()->first() instanceof self;
+    }
+
+    /**
      * Check if a name already exists
      *
      * @param string $name
@@ -73,13 +130,17 @@ class ApiKey extends Model
     }
 
     /**
-     * Check if a key already exists
+     * Log an API key admin event
      *
-     * @param string $key
-     * @return bool
+     * @param ApiKey $apiKey
+     * @param string $eventName
      */
-    private static function keyExists($key)
+    protected static function logApiKeyAdminEvent(ApiKey $apiKey, $eventName)
     {
-        return self::where('key', $key)->withTrashed()->first() instanceof self;
+        $event             = new ApiKeyAdminEvent;
+        $event->api_key_id = $apiKey->id;
+        $event->ip_address = request()->ip();
+        $event->event      = $eventName;
+        $event->save();
     }
 }
