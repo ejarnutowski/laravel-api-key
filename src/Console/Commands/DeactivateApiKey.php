@@ -5,27 +5,27 @@ namespace Ejarnutowski\LaravelApiKey\Console\Commands;
 use Ejarnutowski\LaravelApiKey\Models\ApiKey;
 use Illuminate\Console\Command;
 
-class GenerateApiKey extends Command
+class DeactivateApiKey extends Command
 {
     /**
      * Error messages
      */
-    const MESSAGE_ERROR_INVALID_NAME_FORMAT = 'Invalid name.  Must be a lowercase alphabetic characters and hyphens less than 255 characters long.';
-    const MESSAGE_ERROR_NAME_ALREADY_USED   = 'Name is already used.';
+    const MESSAGE_ERROR_INVALID_NAME        = 'Invalid name.';
+    const MESSAGE_ERROR_NAME_DOES_NOT_EXIST = 'Name does not exist.';
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'apikey:generate {name}';
+    protected $signature = 'apikey:deactivate {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate a new API key';
+    protected $description = 'Deactivate an API key by name';
 
     /**
      * Execute the console command.
@@ -41,14 +41,17 @@ class GenerateApiKey extends Command
             return;
         }
 
-        $apiKey       = new ApiKey;
-        $apiKey->name = $name;
-        $apiKey->key  = ApiKey::generate();
-        $apiKey->save();
+        $key = ApiKey::where('name', $name)->first();
 
-        $this->info('API key created');
-        $this->info('Name: ' . $apiKey->name);
-        $this->info('Key: '  . $apiKey->key);
+        if (!$key->active) {
+            $this->info('Key "' . $name . '" is already inactive');
+            return;
+        }
+
+        $key->active = 0;
+        $key->save();
+
+        $this->info('Deactivated key: ' . $name);
     }
 
     /**
@@ -60,10 +63,10 @@ class GenerateApiKey extends Command
     protected function validateName($name)
     {
         if (!ApiKey::isValidName($name)) {
-            return self::MESSAGE_ERROR_INVALID_NAME_FORMAT;
+            return self::MESSAGE_ERROR_INVALID_NAME;
         }
-        if (ApiKey::nameExists($name)) {
-            return self::MESSAGE_ERROR_NAME_ALREADY_USED;
+        if (!ApiKey::nameExists($name)) {
+            return self::MESSAGE_ERROR_NAME_DOES_NOT_EXIST;
         }
         return null;
     }
