@@ -63,7 +63,7 @@ $ php artisan apikey:activate app1
 Delete a key.  You'll be asked to confirm.  Keys are [soft-deleted](https://laravel.com/docs/eloquent#soft-deleting) for record keeping.
 
 ```bash
-$ php artisan apikey:delete key-name
+$ php artisan apikey:delete app1
   
 // Are you sure you want to delete API key 'app1'? (yes/no) [no]:
 // > yes
