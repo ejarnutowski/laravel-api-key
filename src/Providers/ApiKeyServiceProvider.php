@@ -22,7 +22,7 @@ class ApiKeyServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->registerMiddleware($router);
-        $this->registerMigrations(__DIR__ . '/../database/migrations');
+        $this->registerMigrations(__DIR__ . '/../../database/migrations');
     }
 
     /**
