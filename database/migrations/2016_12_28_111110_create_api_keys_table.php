@@ -24,6 +24,21 @@ class CreateApiKeysTable extends Migration
             $table->index('name');
             $table->index('key');
         });
+
+        Schema::create('domais', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('api_key_id');
+            $table->foreign('api_key_id')->references('id')->on('api_keys');
+            $table->string('limiter');
+            $table->enum('limiter_type', ['domain', 'ip','android_apps','ios_apps']);
+            $table->unsignedInteger('number_request');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('api_key_id');
+            $table->index('limiter');
+        });
     }
 
     /**
@@ -34,5 +49,6 @@ class CreateApiKeysTable extends Migration
     public function down()
     {
         Schema::dropIfExists('api_keys');
+        Schema::dropIfExists('domais');
     }
 }

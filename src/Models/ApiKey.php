@@ -18,6 +18,13 @@ class ApiKey extends Model
 
     protected $table = 'api_keys';
 
+    protected $hidden = [
+          'updated_at',
+          'created_at',
+          'deleted_at',
+        
+      ];
+
     /**
      * Get the related ApiKeyAccessEvents records
      *
@@ -45,12 +52,11 @@ class ApiKey extends Model
     {
         parent::boot();
 
-        static::created(function(ApiKey $apiKey) {
+        static::created(function (ApiKey $apiKey) {
             self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_CREATED);
         });
 
-        static::updated(function($apiKey) {
-
+        static::updated(function ($apiKey) {
             $changed = $apiKey->getDirty();
 
             if (isset($changed) && $changed['active'] === 1) {
@@ -60,10 +66,9 @@ class ApiKey extends Model
             if (isset($changed) && $changed['active'] === 0) {
                 self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DEACTIVATED);
             }
-
         });
 
-        static::deleted(function($apiKey) {
+        static::deleted(function ($apiKey) {
             self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DELETED);
         });
     }
@@ -157,5 +162,10 @@ class ApiKey extends Model
         $event->ip_address = request()->ip();
         $event->event      = $eventName;
         $event->save();
+    }
+
+    public static function infoKey($key)
+    {
+        return self::where('id', $key)->first();
     }
 }
