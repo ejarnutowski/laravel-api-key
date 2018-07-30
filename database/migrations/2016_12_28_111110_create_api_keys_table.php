@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Ejarnutowski\LaravelApiKey\Models\ApiKey;
 
 class CreateApiKeysTable extends Migration
 {
@@ -24,6 +25,45 @@ class CreateApiKeysTable extends Migration
             $table->index('name');
             $table->index('key');
         });
+
+        Schema::create('domais', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('api_key_id');
+            $table->string('limiter');
+            $table->enum('limiter_type', ['domain', 'ip','android_apps','ios_apps']);
+            $table->unsignedInteger('number_request');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->dateTime('created_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('updated_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->softDeletes();
+
+            $table->index('api_key_id');
+            $table->index('limiter');
+
+            // foreign key block
+            $table->foreign('api_key_id')
+                  ->references('id')->on('api_keys');
+        });
+
+        $data = array('key_name' => "digitaltown");
+        try {
+            \DB::beginTransaction();
+
+            if (ApiKey::nameExists($data["key_name"])) {
+                return "Invalid name.";
+            }
+
+            $apiKey       = new ApiKey();
+            $apiKey->name = $data["key_name"];
+            $apiKey->key  = ApiKey::generate();
+            $apiKey->save();
+
+            \DB::commit();
+            return $apiKey;
+        } catch (Exception $ex) {
+            \DB::rollBack();
+            return redirect()->back()->withErrors(["Fail:{$ex->getMessage()}"]);
+        }
     }
 
     /**
@@ -33,6 +73,9 @@ class CreateApiKeysTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('api_keys');
+        Schema::dropIfExists('domais');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
