@@ -39,8 +39,6 @@ class CreateApiKeysTable extends Migration
             $table->index('api_key_id');
             $table->index('limiter');
 
-            
-
             // foreign key block
             $table->foreign('api_key_id')
                   ->references('id')->on('api_keys');
