@@ -1,5 +1,5 @@
 {
-    "name": "ejarnutowski/laravel-api-key",
+    "name": "DigitalTown/laravel-api-key",
     "description": "Authorize requests to your Laravel application with API keys",
     "keywords": ["api", "api key", "authentication", "authorization", "laravel"],
     "license": "MIT",
