@@ -52,7 +52,9 @@ class CreateApiKeysTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('api_keys');
         Schema::dropIfExists('domais');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
