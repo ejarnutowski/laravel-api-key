@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class AuthorizeApiKey
 {
     const AUTH_HEADER = 'X-Authorization';
+    const AUTH_QUERY_PARAM = 'api_key'; 
 
     /**
      * Handle the incoming request
@@ -21,7 +22,9 @@ class AuthorizeApiKey
     public function handle(Request $request, Closure $next)
     {
         $header = $request->header(self::AUTH_HEADER);
-        $apiKey = ApiKey::getByKey($header);
+        $query = $request->query(self::AUTH_QUERY_PARAM);
+
+        $apiKey = ApiKey::getByKey($header) ?? ApiKey::getByKey($query);
 
         if ($apiKey instanceof ApiKey) {
             $this->logAccessEvent($request, $apiKey);
