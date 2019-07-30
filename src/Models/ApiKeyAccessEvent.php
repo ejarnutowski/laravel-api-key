@@ -8,6 +8,11 @@ class ApiKeyAccessEvent extends Model
 {
     protected $table = 'api_key_access_events';
 
+    protected $fillable = [
+        'ip_address',
+        'url',
+    ];
+
     /**
      * Get the related ApiKey record
      *

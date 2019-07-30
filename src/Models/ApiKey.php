@@ -4,6 +4,7 @@ namespace Ejarnutowski\LaravelApiKey\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class ApiKey extends Model
 {
@@ -17,6 +18,11 @@ class ApiKey extends Model
     protected static $nameRegex = '/^[a-z0-9-]{1,255}$/';
 
     protected $table = 'api_keys';
+
+    protected $fillable = [
+        'name',
+        'key',
+    ];
 
     /**
      * Get the related ApiKeyAccessEvents records
@@ -76,7 +82,7 @@ class ApiKey extends Model
     public static function generate()
     {
         do {
-            $key = str_random(64);
+            $key = Str::random(64);
         } while (self::keyExists($key));
 
         return $key;

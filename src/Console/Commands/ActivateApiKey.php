@@ -41,17 +41,18 @@ class ActivateApiKey extends Command
             return;
         }
 
-        $key = ApiKey::where('name', $name)->first();
+        /** @var ApiKey $key */
+        $key = ApiKey::whereName($name)->firstOrFail();
 
         if ($key->active) {
-            $this->info('Key "' . $name . '" is already active');
+            $this->info("Key $name is already active");
             return;
         }
 
         $key->active = 1;
         $key->save();
 
-        $this->info('Activated key: ' . $name);
+        $this->info("Activated key: $name");
     }
 
     /**

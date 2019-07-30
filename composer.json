@@ -11,7 +11,12 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.0",
+        "illuminate/console": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/routing": "^5.5",
+        "illuminate/support": "^5.5",
+        "illuminate/http": "^5.5"
     },
     "autoload": {
         "psr-4": {
@@ -20,8 +25,8 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-                "ejarnutowski/laravel-api-key"
+            "providers": [
+                "Ejarnutowski\\LaravelApiKey\\Providers\\ApiKeyServiceProvider"
             ]
         }
     }

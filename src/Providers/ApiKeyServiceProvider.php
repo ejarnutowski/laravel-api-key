@@ -22,7 +22,10 @@ class ApiKeyServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->registerMiddleware($router);
-        $this->registerMigrations(__DIR__ . '/../../database/migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        }
     }
 
     /**
@@ -31,13 +34,15 @@ class ApiKeyServiceProvider extends ServiceProvider
      * @return void
      */
     public function register() {
-        $this->commands([
-            ActivateApiKey::class,
-            DeactivateApiKey::class,
-            DeleteApiKey::class,
-            GenerateApiKey::class,
-            ListApiKeys::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ActivateApiKey::class,
+                DeactivateApiKey::class,
+                DeleteApiKey::class,
+                GenerateApiKey::class,
+                ListApiKeys::class,
+            ]);
+        }
     }
 
     /**
@@ -49,22 +54,6 @@ class ApiKeyServiceProvider extends ServiceProvider
      */
     protected function registerMiddleware(Router $router)
     {
-        $versionComparison = version_compare(app()->version(), '5.4.0');
-
-        if ($versionComparison >= 0) {
-            $router->aliasMiddleware('auth.apikey', AuthorizeApiKey::class);
-        } else {
-            $router->middleware('auth.apikey', AuthorizeApiKey::class);
-        }
-    }
-
-    /**
-     * Register migrations
-     */
-    protected function registerMigrations($migrationsDirectory)
-    {
-        $this->publishes([
-            $migrationsDirectory => database_path('migrations')
-        ], 'migrations');
+        $router->aliasMiddleware('auth.apikey', AuthorizeApiKey::class);
     }
 }

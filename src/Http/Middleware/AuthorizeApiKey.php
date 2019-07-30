@@ -6,6 +6,7 @@ use Closure;
 use Ejarnutowski\LaravelApiKey\Models\ApiKey;
 use Ejarnutowski\LaravelApiKey\Models\ApiKeyAccessEvent;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthorizeApiKey
 {
@@ -28,11 +29,7 @@ class AuthorizeApiKey
             return $next($request);
         }
 
-        return response([
-            'errors' => [[
-                'message' => 'Unauthorized'
-            ]]
-        ], 401);
+        throw new HttpException(401, 'Unauthorized');
     }
 
     /**
@@ -43,10 +40,9 @@ class AuthorizeApiKey
      */
     protected function logAccessEvent(Request $request, ApiKey $apiKey)
     {
-        $event = new ApiKeyAccessEvent;
-        $event->api_key_id = $apiKey->id;
-        $event->ip_address = $request->ip();
-        $event->url        = $request->fullUrl();
-        $event->save();
+        $apiKey->accessEvents()->create([
+            'ip_address' => $request->ip(),
+            'url' => $request->fullUrl(),
+        ]);
     }
 }

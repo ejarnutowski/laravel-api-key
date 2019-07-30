@@ -18,10 +18,6 @@ In your `config/app.php` file, add the Laravel API Key service provider to the e
 ],
 ```
 
-Publish the migration files
-
-    $ php artisan vendor:publish
-
 Run the migrations
 
     $ php artisan migrate
@@ -126,17 +122,7 @@ In order to pass the `auth.apikey` middleware, requests must include an `X-Autho
 
 ## Unauthorized Requests
 
-Requests that do not pass authorization will receive an HTTP 401 Status Code with the following response
-
-```json
-{
-    "errors": [
-        {
-            "message": "Unauthorized"
-        }
-    ]
-}
-```
+Middleware will throw `HttpException` with 401 status code if requests do not pass authorization.
 
 ## Event History
 

@@ -41,16 +41,17 @@ class DeleteApiKey extends Command
             return;
         }
 
-        $confirmMessage = 'Are you sure you want to delete API key \'' . $name . '\'?';
+        $confirmMessage = "Are you sure you want to delete API key '$name'?";
 
         if (!$this->confirm($confirmMessage)) {
             return;
         }
 
-        $key = ApiKey::where('name', $name)->first();
+        /** @var ApiKey $key */
+        $key = ApiKey::whereName($name)->firstOrFail();
         $key->delete();
 
-        $this->info('Deleted key: ' . $name);
+        $this->info("Deleted key: $name");
     }
 
     /**

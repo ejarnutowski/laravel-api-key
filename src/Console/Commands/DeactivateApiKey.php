@@ -41,17 +41,18 @@ class DeactivateApiKey extends Command
             return;
         }
 
-        $key = ApiKey::where('name', $name)->first();
+        /** @var ApiKey $key */
+        $key = ApiKey::whereName($name)->firstOrFail();
 
         if (!$key->active) {
-            $this->info('Key "' . $name . '" is already deactivated');
+            $this->info("Key $name is already deactivated");
             return;
         }
 
         $key->active = 0;
         $key->save();
 
-        $this->info('Deactivated key: ' . $name);
+        $this->info("Deactivated key: $name");
     }
 
     /**
