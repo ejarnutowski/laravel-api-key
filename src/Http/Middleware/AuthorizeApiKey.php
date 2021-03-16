@@ -6,6 +6,7 @@ use Closure;
 use Ejarnutowski\LaravelApiKey\Models\ApiKey;
 use Ejarnutowski\LaravelApiKey\Models\ApiKeyAccessEvent;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthorizeApiKey
 {
@@ -28,11 +29,7 @@ class AuthorizeApiKey
             return $next($request);
         }
 
-        return response([
-            'errors' => [[
-                'message' => 'Unauthorized'
-            ]]
-        ], 401);
+        throw new UnauthorizedHttpException(self::AUTH_HEADER);
     }
 
     /**
