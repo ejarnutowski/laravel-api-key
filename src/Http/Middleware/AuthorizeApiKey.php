@@ -28,11 +28,7 @@ class AuthorizeApiKey
             return $next($request);
         }
 
-        return response([
-            'errors' => [[
-                'message' => 'Unauthorized'
-            ]]
-        ], 401);
+        throw new UnauthorizedHttpException(self::AUTH_HEADER);
     }
 
     /**
