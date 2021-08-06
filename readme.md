@@ -20,7 +20,7 @@ In your `config/app.php` file, add the Laravel API Key service provider to the e
 
 Publish the migration files
 
-    $ php artisan vendor:publish
+    $ php artisan vendor:publish --provider="Ejarnutowski\LaravelApiKey\Providers\ApiKeyServiceProvider" 
 
 Run the migrations
 
