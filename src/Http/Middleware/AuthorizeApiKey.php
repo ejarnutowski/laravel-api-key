@@ -6,6 +6,7 @@ use Closure;
 use Ejarnutowski\LaravelApiKey\Models\ApiKey;
 use Ejarnutowski\LaravelApiKey\Models\ApiKeyAccessEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthorizeApiKey
 {
@@ -21,9 +22,13 @@ class AuthorizeApiKey
     public function handle(Request $request, Closure $next)
     {
         $header = $request->header(self::AUTH_HEADER);
-        $apiKey = ApiKey::getByKey($header);
+        $parts = explode('.', $header);
+        $apiKey = ApiKey::getByKey($parts[0]);
+        error_log($apiKey instanceof ApiKey);
+        error_log($apiKey->key);
+        error_log($this->matchingHash($parts[1], $apiKey->key));
 
-        if ($apiKey instanceof ApiKey) {
+        if ($apiKey instanceof ApiKey && $this->matchingHash($parts[1], $apiKey->key)) {
             $this->logAccessEvent($request, $apiKey);
             return $next($request);
         }
@@ -48,5 +53,11 @@ class AuthorizeApiKey
         $event->ip_address = $request->ip();
         $event->url        = $request->fullUrl();
         $event->save();
+    }
+
+    private function matchingHash($headerKey, $databaseKey)
+    {
+        $hashedSuffix = substr($databaseKey, 7);
+        return Hash::check($headerKey, $hashedSuffix);
     }
 }

@@ -5,6 +5,7 @@ namespace Ejarnutowski\LaravelApiKey\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class ApiKey extends Model
 {
@@ -72,13 +73,15 @@ class ApiKey extends Model
     /**
      * Generate a secure unique API key
      *
-     * @return string
+     * @return array
      */
     public static function generate()
     {
         do {
-            $key = Str::random(64);
-        } while (self::keyExists($key));
+            $prefix = Str::random(6);
+            $suffix = Str::random(64);
+            $key = [ 'hashed' => $prefix.'.'.Hash::make($suffix), 'plain' => $prefix.'.'.$suffix];
+        } while (self::keyExists($prefix));
 
         return $key;
     }
@@ -87,14 +90,11 @@ class ApiKey extends Model
      * Get ApiKey record by key value
      *
      * @param string $key
-     * @return bool
+     * @return ApiKey
      */
     public static function getByKey($key)
     {
-        return self::where([
-            'key'    => $key,
-            'active' => 1
-        ])->first();
+        return self::where('key', 'like', $key.'%')->where('active', 1)->first();
     }
 
     /**
@@ -124,12 +124,12 @@ class ApiKey extends Model
      *
      * Includes soft deleted records
      *
-     * @param string $key
+     * @param string $prefix
      * @return bool
      */
-    public static function keyExists($key)
+    public static function keyExists($prefix)
     {
-        return self::where('key', $key)->withTrashed()->first() instanceof self;
+        return self::where('key', 'like', $prefix.'%')->withTrashed()->first() instanceof self;
     }
 
     /**
