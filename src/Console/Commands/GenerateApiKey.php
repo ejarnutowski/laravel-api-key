@@ -4,6 +4,7 @@ namespace Ejarnutowski\LaravelApiKey\Console\Commands;
 
 use Ejarnutowski\LaravelApiKey\Models\ApiKey;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class GenerateApiKey extends Command
 {
@@ -43,12 +44,13 @@ class GenerateApiKey extends Command
 
         $apiKey       = new ApiKey;
         $apiKey->name = $name;
-        $apiKey->key  = ApiKey::generate();
+        $generatedKey = ApiKey::generate();
+        $apiKey->key  = $generatedKey['hashed'];
         $apiKey->save();
 
-        $this->info('API key created');
+        $this->info('API key created. Be sure to save this somewhere safe as you will not be able to see it again');
         $this->info('Name: ' . $apiKey->name);
-        $this->info('Key: '  . $apiKey->key);
+        $this->info('Key: '  . $generatedKey['plain']);
     }
 
     /**
