@@ -23,6 +23,9 @@ class ApiKeyServiceProvider extends ServiceProvider
     {
         $this->registerMiddleware($router);
         $this->registerMigrations(__DIR__ . '/../../database/migrations');
+        $this->publishes([
+            __DIR__.'/../../config/laravelApiKey.php' => config_path('laravelApiKey.php'),
+        ], 'apikey-config');
     }
 
     /**
@@ -38,6 +41,10 @@ class ApiKeyServiceProvider extends ServiceProvider
             GenerateApiKey::class,
             ListApiKeys::class,
         ]);
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../../config/laravelApiKey.php', 'laravelApiKey'
+        );
     }
 
     /**

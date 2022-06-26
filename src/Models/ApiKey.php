@@ -47,25 +47,29 @@ class ApiKey extends Model
         parent::boot();
 
         static::created(function(ApiKey $apiKey) {
-            self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_CREATED);
+            if (config('laravelApiKey.enable_admin_events') === true){
+                self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_CREATED);
+            }
         });
 
         static::updated(function($apiKey) {
 
             $changed = $apiKey->getDirty();
+            if (config('laravelApiKey.enable_admin_events') === true) {
+                if (isset($changed) && $changed['active'] === 1) {
+                    self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_ACTIVATED);
+                }
 
-            if (isset($changed) && $changed['active'] === 1) {
-                self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_ACTIVATED);
+                if (isset($changed) && $changed['active'] === 0) {
+                    self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DEACTIVATED);
+                }
             }
-
-            if (isset($changed) && $changed['active'] === 0) {
-                self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DEACTIVATED);
-            }
-
         });
 
         static::deleted(function($apiKey) {
-            self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DELETED);
+            if (config('laravelApiKey.enable_admin_events') === true) {
+                self::logApiKeyAdminEvent($apiKey, self::EVENT_NAME_DELETED);
+            }
         });
     }
 
@@ -76,8 +80,9 @@ class ApiKey extends Model
      */
     public static function generate()
     {
+        $length = config('laravelApiKey.api_key_length', 64);
         do {
-            $key = Str::random(64);
+            $key = Str::random($length);
         } while (self::keyExists($key));
 
         return $key;

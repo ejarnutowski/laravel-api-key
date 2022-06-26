@@ -18,7 +18,7 @@ In your `config/app.php` file, add the Laravel API Key service provider to the e
 ],
 ```
 
-Publish the migration files
+Publish the migration & config files
 
     $ php artisan vendor:publish
 
@@ -31,6 +31,18 @@ Run the migrations
 * api_keys
 * api_key_access_events
 * api_key_admin_events
+
+And config file config/laravelApiKey.php
+```php
+[
+    // if true the admin data will be saved in the database
+    'enable_admin_events'
+    // if true all data request will be saved in the database
+    'enable_access_events'
+    // The number of characters for the generation of the Api Key
+    'api_key_length'  
+],
+```
 
 ## Managing Keys
 

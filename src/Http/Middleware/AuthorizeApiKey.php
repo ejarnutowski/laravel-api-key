@@ -24,7 +24,9 @@ class AuthorizeApiKey
         $apiKey = ApiKey::getByKey($header);
 
         if ($apiKey instanceof ApiKey) {
-            $this->logAccessEvent($request, $apiKey);
+            if (config('laravelApiKey.enable_access_events') === true){
+                $this->logAccessEvent($request, $apiKey);
+            }
             return $next($request);
         }
 
