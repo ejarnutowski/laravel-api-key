@@ -1,8 +1,8 @@
 <?php
 
-namespace Ejarnutowski\LaravelApiKey\Console\Commands;
+namespace Cable8mm\LaravelApiKey\Console\Commands;
 
-use Ejarnutowski\LaravelApiKey\Models\ApiKey;
+use Cable8mm\LaravelApiKey\Models\ApiKey;
 use Illuminate\Console\Command;
 
 class DeleteApiKey extends Command

@@ -1,20 +1,22 @@
 Laravel API Key Auth
 ========
 
-<a href="https://packagist.org/packages/ejarnutowski/laravel-api-key"><img src="https://poser.pugx.org/ejarnutowski/laravel-api-key/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/ejarnutowski/laravel-api-key"><img src="https://poser.pugx.org/ejarnutowski/laravel-api-key/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/ejarnutowski/laravel-api-key"><img src="https://poser.pugx.org/ejarnutowski/laravel-api-key/license.svg" alt="License"></a>
+<a href="https://packagist.org/packages/cable8mm/laravel-api-key"><img src="https://poser.pugx.org/cable8mm/laravel-api-key/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/cable8mm/laravel-api-key"><img src="https://poser.pugx.org/cable8mm/laravel-api-key/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/cable8mm/laravel-api-key"><img src="https://poser.pugx.org/cable8mm/laravel-api-key/license.svg" alt="License"></a>
+
+This version is a [fork](https://github.com/ejarnutowski/laravel-api-key).
 
 ## Installation
 
-Run `composer require ejarnutowski/laravel-api-key`.
+Run `composer require cable8mm/laravel-api-key`.
 
 In your `config/app.php` file, add the Laravel API Key service provider to the end of the `providers` array.
 
 ```php
 'providers' => [
     ...
-    Ejarnutowski\LaravelApiKey\Providers\ApiKeyServiceProvider::class,
+    Cable8mm\LaravelApiKey\Providers\ApiKeyServiceProvider::class,
 ],
 ```
 

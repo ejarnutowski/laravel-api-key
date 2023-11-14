@@ -1,6 +1,6 @@
 <?php
 
-namespace Ejarnutowski\LaravelApiKey\Models;
+namespace Cable8mm\LaravelApiKey\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
