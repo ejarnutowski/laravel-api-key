@@ -138,6 +138,18 @@ Requests that do not pass authorization will receive an HTTP 401 Status Code wit
 }
 ```
 
+## Fix coding style
+
+```sh
+composer lint
+```
+
+## Test
+
+```sh
+composer test
+```
+
 ## License
 
 The Laravel API Key package is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
