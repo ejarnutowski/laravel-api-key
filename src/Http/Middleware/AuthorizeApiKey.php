@@ -2,6 +2,7 @@
 
 namespace Cable8mm\LaravelApiKey\Http\Middleware;
 
+use Cable8mm\LaravelApiKey\Exceptions\LaravelApiKeyException;
 use Cable8mm\LaravelApiKey\Models\ApiKey;
 use Closure;
 use Illuminate\Http\Request;
@@ -24,10 +25,6 @@ class AuthorizeApiKey
             return $next($request);
         }
 
-        return response([
-            'errors' => [[
-                'message' => 'Unauthorized',
-            ]],
-        ], 401);
+        throw new LaravelApiKeyException('Invalid ApiKey instance from request in middleware');
     }
 }
