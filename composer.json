@@ -13,7 +13,6 @@
             "email": "cable8mm@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
         "php": "^8.0",
         "illuminate/console": "^9.18|^10.0",
@@ -23,11 +22,17 @@
         "laravel/helpers": "^1.1.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.13"
+        "laravel/pint": "^1.13",
+        "phpunit/phpunit": "^10.4"
     },
     "autoload": {
         "psr-4": {
-            "Cable8mm\\LaravelApiKey\\": "src"
+            "Cable8mm\\LaravelApiKey\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cable8mm\\LaravelApiKey\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -36,5 +41,15 @@
                 "cable8mm/laravel-api-key"
             ]
         }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit tests"
+        ],
+        "lint": [
+            "./vendor/bin/pint"
+        ]
     }
 }
