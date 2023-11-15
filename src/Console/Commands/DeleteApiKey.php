@@ -10,7 +10,8 @@ class DeleteApiKey extends Command
     /**
      * Error messages
      */
-    const MESSAGE_ERROR_INVALID_NAME        = 'Invalid name.';
+    const MESSAGE_ERROR_INVALID_NAME = 'Invalid name.';
+
     const MESSAGE_ERROR_NAME_DOES_NOT_EXIST = 'Name does not exist.';
 
     /**
@@ -38,35 +39,37 @@ class DeleteApiKey extends Command
 
         if ($error) {
             $this->error($error);
+
             return;
         }
 
-        $confirmMessage = 'Are you sure you want to delete API key \'' . $name . '\'?';
+        $confirmMessage = 'Are you sure you want to delete API key \''.$name.'\'?';
 
-        if (!$this->confirm($confirmMessage)) {
+        if (! $this->confirm($confirmMessage)) {
             return;
         }
 
         $key = ApiKey::where('name', $name)->first();
         $key->delete();
 
-        $this->info('Deleted key: ' . $name);
+        $this->info('Deleted key: '.$name);
     }
 
     /**
      * Validate name
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     protected function validateName($name)
     {
-        if (!ApiKey::isValidName($name)) {
+        if (! ApiKey::isValidName($name)) {
             return self::MESSAGE_ERROR_INVALID_NAME;
         }
-        if (!ApiKey::nameExists($name)) {
+        if (! ApiKey::nameExists($name)) {
             return self::MESSAGE_ERROR_NAME_DOES_NOT_EXIST;
         }
+
         return null;
     }
 }

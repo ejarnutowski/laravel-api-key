@@ -32,14 +32,15 @@ class ListApiKeys extends Command
 
         if ($keys->count() === 0) {
             $this->info('There are no API keys');
+
             return;
         }
 
         $headers = ['Name', 'ID', 'Status', 'Status Date', 'Key'];
 
-        $rows = $keys->map(function($key) {
+        $rows = $keys->map(function ($key) {
 
-            $status = $key->active    ? 'active'  : 'deactivated';
+            $status = $key->active ? 'active' : 'deactivated';
             $status = $key->trashed() ? 'deleted' : $status;
 
             $statusDate = $key->deleted_at ?: $key->updated_at;
@@ -49,7 +50,7 @@ class ListApiKeys extends Command
                 $key->id,
                 $status,
                 $statusDate,
-                $key->key
+                $key->key,
             ];
 
         });
