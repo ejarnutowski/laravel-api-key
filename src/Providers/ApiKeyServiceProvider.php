@@ -47,7 +47,7 @@ class ApiKeyServiceProvider extends ServiceProvider
      */
     protected function registerMiddleware(Router $router)
     {
-        $versionComparison = version_compare(app()->version(), '5.4.0');
+        $versionComparison = version_compare($this->app->version(), '5.4.0');
 
         if ($versionComparison >= 0) {
             $router->aliasMiddleware('auth.apikey', AuthorizeApiKey::class);
@@ -62,7 +62,7 @@ class ApiKeyServiceProvider extends ServiceProvider
     protected function registerMigrations($migrationsDirectory)
     {
         $this->publishes([
-            $migrationsDirectory => database_path('migrations'),
+            $migrationsDirectory => __DIR__.'/../database/migrations',
         ], 'migrations');
     }
 }
