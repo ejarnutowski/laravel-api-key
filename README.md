@@ -28,11 +28,9 @@ Run the migrations
 
     $ php artisan migrate
 
-3 new database tables will be created:
+1 new database tables will be created:
 
 * api_keys
-* api_key_access_events
-* api_key_admin_events
 
 ## Managing Keys
 
@@ -139,24 +137,6 @@ Requests that do not pass authorization will receive an HTTP 401 Status Code wit
     ]
 }
 ```
-
-## Event History
-
-All API requests that pass authorization are logged in the `api_key_access_events` table.  A record is created for each request with the following information:
-
-* api_key_id
-* ip_address
-* url
-* created_at
-* updated_at
-
-Any time an API key is generated, activated, deactivated, or deleted, a record is logged in the `api_key_admin_events` table.  Each record contains the following information:
-
-* api_key_id
-* ip_address
-* event
-* created_at
-* updated_at
 
 ## License
 

@@ -11,7 +11,8 @@ class GenerateApiKey extends Command
      * Error messages
      */
     const MESSAGE_ERROR_INVALID_NAME_FORMAT = 'Invalid name.  Must be a lowercase alphabetic characters, numbers and hyphens less than 255 characters long.';
-    const MESSAGE_ERROR_NAME_ALREADY_USED   = 'Name is unavailable.';
+
+    const MESSAGE_ERROR_NAME_ALREADY_USED = 'Name is unavailable.';
 
     /**
      * The name and signature of the console command.
@@ -38,33 +39,35 @@ class GenerateApiKey extends Command
 
         if ($error) {
             $this->error($error);
+
             return;
         }
 
-        $apiKey       = new ApiKey;
+        $apiKey = new ApiKey;
         $apiKey->name = $name;
-        $apiKey->key  = ApiKey::generate();
+        $apiKey->key = ApiKey::generate();
         $apiKey->save();
 
         $this->info('API key created');
-        $this->info('Name: ' . $apiKey->name);
-        $this->info('Key: '  . $apiKey->key);
+        $this->info('Name: '.$apiKey->name);
+        $this->info('Key: '.$apiKey->key);
     }
 
     /**
      * Validate name
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     protected function validateName($name)
     {
-        if (!ApiKey::isValidName($name)) {
+        if (! ApiKey::isValidName($name)) {
             return self::MESSAGE_ERROR_INVALID_NAME_FORMAT;
         }
         if (ApiKey::nameExists($name)) {
             return self::MESSAGE_ERROR_NAME_ALREADY_USED;
         }
+
         return null;
     }
 }

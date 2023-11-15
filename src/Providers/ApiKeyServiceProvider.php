@@ -16,13 +16,12 @@ class ApiKeyServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param Router $router
      * @return void
      */
     public function boot(Router $router)
     {
         $this->registerMiddleware($router);
-        $this->registerMigrations(__DIR__ . '/../../database/migrations');
+        $this->registerMigrations(__DIR__.'/../../database/migrations');
     }
 
     /**
@@ -30,7 +29,8 @@ class ApiKeyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->commands([
             ActivateApiKey::class,
             DeactivateApiKey::class,
@@ -44,8 +44,6 @@ class ApiKeyServiceProvider extends ServiceProvider
      * Register middleware
      *
      * Support added for different Laravel versions
-     *
-     * @param Router $router
      */
     protected function registerMiddleware(Router $router)
     {
@@ -64,7 +62,7 @@ class ApiKeyServiceProvider extends ServiceProvider
     protected function registerMigrations($migrationsDirectory)
     {
         $this->publishes([
-            $migrationsDirectory => database_path('migrations')
+            $migrationsDirectory => database_path('migrations'),
         ], 'migrations');
     }
 }
