@@ -38,7 +38,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Cable8mm\\aravelApiKey\\roviders\\ApiKeyServiceProvider"
+                "Cable8mm\\LaravelApiKey\\Providers\\ApiKeyServiceProvider"
             ]
         }
     },
