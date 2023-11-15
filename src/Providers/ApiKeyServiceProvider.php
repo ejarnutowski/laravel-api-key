@@ -21,7 +21,7 @@ class ApiKeyServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->registerMiddleware($router);
-        $this->registerMigrations(__DIR__.'/../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
@@ -54,15 +54,5 @@ class ApiKeyServiceProvider extends ServiceProvider
         } else {
             $router->middleware('auth.apikey', AuthorizeApiKey::class);
         }
-    }
-
-    /**
-     * Register migrations
-     */
-    protected function registerMigrations($migrationsDirectory)
-    {
-        $this->publishes([
-            $migrationsDirectory => __DIR__.'/../database/migrations',
-        ], 'migrations');
     }
 }

@@ -37,8 +37,8 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-                "cable8mm/laravel-api-key"
+            "providers": [
+                "Cable8mm\\aravelApiKey\\roviders\\ApiKeyServiceProvider"
             ]
         }
     },
