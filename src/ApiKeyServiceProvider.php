@@ -1,6 +1,6 @@
 <?php
 
-namespace Cable8mm\LaravelApiKey\Providers;
+namespace Cable8mm\LaravelApiKey;
 
 use Cable8mm\LaravelApiKey\Console\Commands\ActivateApiKey;
 use Cable8mm\LaravelApiKey\Console\Commands\DeactivateApiKey;

@@ -11,19 +11,6 @@ This version is a [fork](https://github.com/ejarnutowski/laravel-api-key).
 
 Run `composer require cable8mm/laravel-api-key`.
 
-In your `config/app.php` file, add the Laravel API Key service provider to the end of the `providers` array.
-
-```php
-'providers' => [
-    ...
-    Cable8mm\LaravelApiKey\Providers\ApiKeyServiceProvider::class,
-],
-```
-
-Publish the migration files
-
-    $ php artisan vendor:publish
-
 Run the migrations
 
     $ php artisan migrate
