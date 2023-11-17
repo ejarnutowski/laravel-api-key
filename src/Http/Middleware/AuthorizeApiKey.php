@@ -12,9 +12,9 @@ class AuthorizeApiKey
     const AUTH_HEADER = 'X-Authorization';
 
     /**
-     * Handle the incoming request
+     * Handle an incoming request.
      *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
