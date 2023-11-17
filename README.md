@@ -125,6 +125,20 @@ Requests that do not pass authorization will receive an HTTP 401 Status Code wit
 }
 ```
 
+## Laravel Nova
+
+Publish the nova resource file
+
+```sh
+php artisan vendor:publish --tag=laravel-api-key-nova
+```
+
+If you will typically need to overwrite,
+
+```sh
+php artisan vendor:publish --tag=laravel-api-key-nova --force
+```
+
 ## Fix coding style
 
 ```sh

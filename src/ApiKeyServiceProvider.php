@@ -20,6 +20,10 @@ class ApiKeyServiceProvider extends ServiceProvider
     {
         $router->middlewareGroup('auth.apikey', [AuthorizeApiKey::class]);
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        $this->publishes([
+            __DIR__.'/../stubs/ApiKey.stub' => $this->app->basePath('app/Nova/ApiKey.php'),
+        ], 'laravel-api-key-nova');
     }
 
     /**
