@@ -24,7 +24,7 @@ class ListApiKeys extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $keys = $this->option('deleted')
             ? ApiKey::withTrashed()->orderBy('name')->get()

@@ -15,44 +15,30 @@ class ApiKeyServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
-     *
-     * @return void
      */
-    public function boot(Router $router)
+    public function boot(Router $router): void
     {
-        $this->registerMiddleware($router);
+        $router->middlewareGroup('auth.apikey', [AuthorizeApiKey::class]);
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        $this->publishes([
+            __DIR__.'/../stubs/ApiKey.stub' => $this->app->basePath('app/Nova/ApiKey.php'),
+        ], 'laravel-api-key-nova');
     }
 
     /**
      * Register the application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->commands([
-            ActivateApiKey::class,
-            DeactivateApiKey::class,
-            DeleteApiKey::class,
-            GenerateApiKey::class,
-            ListApiKeys::class,
-        ]);
-    }
-
-    /**
-     * Register middleware
-     *
-     * Support added for different Laravel versions
-     */
-    protected function registerMiddleware(Router $router)
-    {
-        $versionComparison = version_compare($this->app->version(), '5.4.0');
-
-        if ($versionComparison >= 0) {
-            $router->aliasMiddleware('auth.apikey', AuthorizeApiKey::class);
-        } else {
-            $router->middleware('auth.apikey', AuthorizeApiKey::class);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ActivateApiKey::class,
+                DeactivateApiKey::class,
+                DeleteApiKey::class,
+                GenerateApiKey::class,
+                ListApiKeys::class,
+            ]);
         }
     }
 }

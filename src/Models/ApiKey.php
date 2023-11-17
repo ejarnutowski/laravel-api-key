@@ -24,10 +24,8 @@ class ApiKey extends Model
 
     /**
      * Generate a secure unique API key
-     *
-     * @return string
      */
-    public static function generate()
+    public static function generate(): string
     {
         do {
             $key = Str::random(64);
@@ -40,7 +38,6 @@ class ApiKey extends Model
      * Get ApiKey record by key value
      *
      * @param  string  $key
-     * @return bool
      */
     public static function getByKey($key)
     {
@@ -54,9 +51,8 @@ class ApiKey extends Model
      * Check if key is valid
      *
      * @param  string  $key
-     * @return bool
      */
-    public static function isValidKey($key)
+    public static function isValidKey($key): bool
     {
         return self::getByKey($key) instanceof self;
     }
@@ -65,9 +61,8 @@ class ApiKey extends Model
      * Check if name is valid format
      *
      * @param  string  $name
-     * @return bool
      */
-    public static function isValidName($name)
+    public static function isValidName($name): bool
     {
         return (bool) preg_match(self::$nameRegex, $name);
     }
@@ -78,9 +73,8 @@ class ApiKey extends Model
      * Includes soft deleted records
      *
      * @param  string  $key
-     * @return bool
      */
-    public static function keyExists($key)
+    public static function keyExists($key): bool
     {
         return self::where('key', $key)->withTrashed()->first() instanceof self;
     }
@@ -91,9 +85,8 @@ class ApiKey extends Model
      * Does not include soft deleted records
      *
      * @param  string  $name
-     * @return bool
      */
-    public static function nameExists($name)
+    public static function nameExists($name): bool
     {
         return self::where('name', $name)->first() instanceof self;
     }

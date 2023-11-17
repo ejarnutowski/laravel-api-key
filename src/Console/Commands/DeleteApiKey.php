@@ -31,7 +31,7 @@ class DeleteApiKey extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $name = $this->argument('name');
 
@@ -59,9 +59,8 @@ class DeleteApiKey extends Command
      * Validate name
      *
      * @param  string  $name
-     * @return string
      */
-    protected function validateName($name)
+    protected function validateName($name): ?string
     {
         if (! ApiKey::isValidName($name)) {
             return self::MESSAGE_ERROR_INVALID_NAME;
