@@ -1,9 +1,13 @@
 Laravel API Key Auth
 ========
 
-<a href="https://packagist.org/packages/cable8mm/laravel-api-key"><img src="https://poser.pugx.org/cable8mm/laravel-api-key/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/cable8mm/laravel-api-key"><img src="https://poser.pugx.org/cable8mm/laravel-api-key/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/cable8mm/laravel-api-key"><img src="https://poser.pugx.org/cable8mm/laravel-api-key/license.svg" alt="License"></a>
+[![Build](https://github.com/cable8mm/laravel-api-key/actions/workflows/build.yml/badge.svg)](https://github.com/cable8mm/laravel-api-key/actions/workflows/build.yml)
+[![PHP Linting (Pint)](https://github.com/cable8mm/laravel-api-key/actions/workflows/coding-style-php.yml/badge.svg)](https://github.com/cable8mm/laravel-api-key/actions/workflows/coding-style-php.yml)
+[![Latest Stable Version](http://poser.pugx.org/cable8mm/laravel-api-key/v)](https://packagist.org/packages/cable8mm/laravel-api-key)
+[![Total Downloads](http://poser.pugx.org/cable8mm/laravel-api-key/downloads)](https://packagist.org/packages/cable8mm/laravel-api-key)
+[![Latest Unstable Version](http://poser.pugx.org/cable8mm/laravel-api-key/v/unstable)](https://packagist.org/packages/cable8mm/laravel-api-key)
+[![License](http://poser.pugx.org/cable8mm/laravel-api-key/license)](https://packagist.org/packages/cable8mm/laravel-api-key)
+[![PHP Version Require](http://poser.pugx.org/cable8mm/laravel-api-key/require/php)](https://packagist.org/packages/cable8mm/laravel-api-key)
 
 This version is a [fork](https://github.com/ejarnutowski/laravel-api-key).
 
