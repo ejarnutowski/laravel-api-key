@@ -9,6 +9,10 @@ Laravel API Key Auth
 [![License](http://poser.pugx.org/cable8mm/laravel-api-key/license)](https://packagist.org/packages/cable8mm/laravel-api-key)
 [![PHP Version Require](http://poser.pugx.org/cable8mm/laravel-api-key/require/php)](https://packagist.org/packages/cable8mm/laravel-api-key)
 
+This repository was transferred to https://github.com/cable8mm/auth-by-key then it was archived.
+
+본 레포지토리는 https://github.com/cable8mm/auth-by-key 로 이동되었고, 아카이브 되었습니다.
+
 This version is a [fork](https://github.com/ejarnutowski/laravel-api-key).
 
 ## Installation
